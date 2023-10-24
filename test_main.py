@@ -112,7 +112,7 @@ def test_column_match_sttm():
     count_ = 0
     sttm_table = session.table(name=config_dict["sttm_table"]).select("COLUMN NAME").collect();
     sttm_table_col_list = [f"{cols[0]}".lower() for cols in sttm_table]
-    for column_ in target:
+    for column_ in target.columns:
         if f"{column_}".lower() in sttm_table_col_list:
             count_ += 1
     log_res = 'PASSED' if count_ == len(sttm_table_col_list) else 'NOT PASSED'
