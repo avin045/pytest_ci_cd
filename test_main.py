@@ -108,4 +108,15 @@ def test_null_check():
     logger.info(f"NULL CHECK : {log_res}")
     assert True if target.count() == target.select(list_of_cols_nc).dropna().count() else False, f"The Null Columns are {null_columns}"
 
+def test_column_match_sttm():
+    count_ = 0
+    sttm_table = session.table(name=config_dict["sttm_table"]).select("COLUMN NAME").collect();
+    sttm_table_col_list = [cols[0].lower() for cols in sttm_table]
+    for column in target:
+        if column.lower() in sttm_table_col_list:
+            count_ += 1
+    log_res = 'PASSED' if count_ == len(sttm_table_col_list) else 'NOT PASSED'
+    logger.info(f"COLUMN MATCH WITH STTM : {log_res}")
+    assert count_ == len(sttm_table_col_list)
+
 # '''
