@@ -39,12 +39,9 @@ logger.addHandler(logger_file_handler)
 
 # logger = setup_logger()
 
-# user = os.environ.get("snow_user")
-# password = os.environ.get("snow_pwd")
-# account = os.environ.get("snow_acc")
-user = "leo"
-password = "SnowFlakeTrial222222"
-account = "woimctp-dw57998"
+user = os.environ.get("snow_user")
+password = os.environ.get("snow_pwd")
+account = os.environ.get("snow_acc")
 warehouse = config_dict['warehouse']
 role = config_dict['role']
 
