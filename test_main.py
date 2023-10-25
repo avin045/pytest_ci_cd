@@ -39,9 +39,12 @@ logger.addHandler(logger_file_handler)
 
 # logger = setup_logger()
 
-user = os.environ.get("snow_user")
-password = os.environ.get("snow_pwd")
-account = os.environ.get("snow_acc")
+# user = os.environ.get("snow_user")
+# password = os.environ.get("snow_pwd")
+# account = os.environ.get("snow_acc")
+user = "leo"
+password = "SnowFlakeTrial222222"
+account = "woimctp-dw57998"
 warehouse = config_dict['warehouse']
 role = config_dict['role']
 
@@ -110,13 +113,25 @@ def test_null_check():
 
 def test_column_match_sttm():
     count_ = 0
+    col_in_tgt_not_in_sttm = []
     sttm_table = session.table(name=config_dict["sttm_table"]).select("COLUMN NAME").collect();
     sttm_table_col_list = [f"{cols[0]}".lower() for cols in sttm_table]
     for column_ in target.columns:
         if f"{column_}".lower() in sttm_table_col_list:
             count_ += 1
+        if f"{column_}".lower() not in sttm_table_col_list:
+                col_in_tgt_not_in_sttm.append(column_)
+
+    cols_in_sttm_not_in_tgt = [col_name for col_name in sttm_table_col_list if col_name not in target.columns]
+ 
+    if len(cols_in_sttm_not_in_tgt) != 0:
+        result_ = f"COLUMN PRESENT IN STTM BUT NOT IN TARGET : {','.join(cols_in_sttm_not_in_tgt)}"
+    
+    if count_ != len(sttm_table_col_list):
+        res_ = f"Columns present in Target not in STTM {','.join(col_in_tgt_not_in_sttm)}"
+
     log_res = 'PASSED' if count_ == len(sttm_table_col_list) else 'NOT PASSED'
-    logger.info(f"COLUMN MATCH WITH STTM : {log_res}")
-    assert count_ == len(sttm_table_col_list)
+    logger.info(f"COLUMN MATCH WITH STTM :  {log_res}")
+    assert count_ == len(sttm_table_col_list),f"{res_} {result_}"
 
 # '''
